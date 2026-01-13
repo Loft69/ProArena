@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +29,18 @@ public class StructureInstruction implements StructureMeta {
     }
 
     public void complete(@NonNull Location rawLocation) {
-        for (BlockInstruction blockInstruction : instructions) blockInstruction.complete(rawLocation);
+        World world = rawLocation.getWorld();
+        if (world == null) return;
+
+        int x = rawLocation.getBlockX();
+        int y = rawLocation.getBlockY();
+        int z = rawLocation.getBlockZ();
+
+        for (BlockInstruction blockInstruction : instructions) blockInstruction.complete(x, y, z, world);
     }
 
     private boolean isValid(@NonNull BlockInstruction blockInstruction) {
-        return blockInstruction.data() != null;
+        return blockInstruction.getData() != null;
     }
 
     @Override

@@ -24,11 +24,12 @@ import java.nio.file.Path;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Selection {
     Location center;
-    Location min;
-    Location max;
+    Location pos1;
+    Location pos2;
     boolean rotatable = false;
 
     public StructureInstruction toInstruction() {
+        if (!isValid()) return null;
         StructureInstruction structure = new StructureInstruction();
 
         World world = center.getWorld();
@@ -37,6 +38,10 @@ public class Selection {
         int cx = center.getBlockX();
         int cy = center.getBlockY();
         int cz = center.getBlockZ();
+
+        Location min = calculate(CalculateType.MIN);
+        Location max = calculate(CalculateType.MAX);
+        assert max != null && min != null;
 
         for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
             for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
@@ -51,7 +56,7 @@ public class Selection {
 
                     BlockData blockData = block.getBlockData();
 
-                    structure.add(new BlockInstruction(blockData, dx, dy, dz));
+                    structure.add(new BlockInstruction(blockData.getAsString(), dx, dy, dz));
                 }
             }
         }
@@ -62,15 +67,48 @@ public class Selection {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         StructureInstruction structure = toInstruction();
 
+        if (structure == null) throw new IllegalStateException("StructureInstruction is null");
+
         Files.createDirectories(path.getParent());
         Files.writeString(path, gson.toJson(structure), StandardCharsets.UTF_8);
     }
 
     public void clear() {
         this.center = null;
-        this.min = null;
-        this.max = null;
+        this.pos1 = null;
+        this.pos2 = null;
         this.rotatable = false;
+    }
+
+    public boolean isValid() {
+        return this.center != null && this.pos1 != null && this.pos2 != null;
+    }
+
+    private Location calculate(CalculateType type) {
+        switch (type) {
+            case MAX -> {
+                return new Location(pos1.getWorld(),
+                        Math.max(pos1.getBlockX(), pos2.getBlockX()),
+                        Math.max(pos1.getBlockY(), pos2.getBlockY()),
+                        Math.max(pos1.getBlockZ(), pos2.getBlockZ())
+                );
+            }
+            case MIN -> {
+                return new Location(pos1.getWorld(),
+                        Math.min(pos1.getBlockX(), pos2.getBlockX()),
+                        Math.min(pos1.getBlockY(), pos2.getBlockY()),
+                        Math.min(pos1.getBlockZ(), pos2.getBlockZ())
+                );
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
+    enum CalculateType {
+        MAX,
+        MIN
     }
 
 }

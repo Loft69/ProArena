@@ -12,17 +12,12 @@ public class MyBiomeProvider extends BiomeProvider {
     private static final Biome BIOME = Biome.FOREST;
 
     @Override
-    public @NotNull Biome getBiome(
-            @NotNull WorldInfo worldInfo,
-            int x, int y, int z
-    ) {
+    public @NotNull Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
         return BIOME;
     }
 
     @Override
-    public @NotNull List<Biome> getBiomes(
-            @NotNull WorldInfo worldInfo
-    ) {
+    public @NotNull List<Biome> getBiomes(@NotNull WorldInfo worldInfo) {
         return List.of(BIOME);
     }
 }
