@@ -1,0 +1,8 @@
+name: ProArena
+version: '1.0'
+main: com.axon.proArena.ProArena
+api-version: '1.21'
+authors: [ Loft ]
+commands:
+  rere:
+  proarena:
