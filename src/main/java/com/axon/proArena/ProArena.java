@@ -1,6 +1,9 @@
 package com.axon.proArena;
 
+import com.axon.proArena.object.structure.factory.InstructionStructureFactory;
+import com.axon.proArena.object.structure.loader.InstructionStructureLoader;
 import com.axon.proArena.object.selection.SelectionController;
+import com.axon.proArena.object.structure.registry.StructureRegistry;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.*;
@@ -10,16 +13,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.nio.file.Path;
 import java.util.Random;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public final class ProArena extends JavaPlugin implements Listener {
 
     SelectionController selectionController = new SelectionController(this);
+    InstructionStructureLoader structureLoader = new InstructionStructureLoader();
 
     @Override
     public void onEnable() {
         selectionController.load();
+        StructureRegistry.register(new InstructionStructureFactory());
+
+        structureLoader.load(Path.of("structure"));
 
         Bukkit.getPluginManager().registerEvents(this, this);
 

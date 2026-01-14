@@ -1,5 +1,6 @@
 package com.axon.proArena.object.selection;
 
+import com.axon.proArena.object.selection.wrapper.SelectionWrapper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,31 +30,28 @@ public class SelectionListener implements Listener {
         controller.apply(wrapper);
     }
 
+
+
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        System.out.println(1);
         Action action = event.getAction();
         if (!(action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK)) return;
 
         Block block = event.getClickedBlock();
         if (block == null) return;
-        System.out.println(2);
 
         Player player = event.getPlayer();
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         if (!mainHand.getType().equals(Material.STICK)) return;
 //        if (!mainHand.getPersistentDataContainer().has(controller.getNamespacedKey(), PersistentDataType.STRING)) return;
-        System.out.println(3);
         SelectionType type;
         if (action == Action.RIGHT_CLICK_BLOCK) type = SelectionType.RIGHT;
         else type = SelectionType.LEFT;
 
-        System.out.println(4);
 
         SelectionWrapper wrapper = new SelectionWrapper(player, type, block);
         controller.apply(wrapper);
         event.setCancelled(true);
-        System.out.println(5);
     }
 
 }

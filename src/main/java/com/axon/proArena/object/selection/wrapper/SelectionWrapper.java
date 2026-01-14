@@ -1,5 +1,6 @@
-package com.axon.proArena.object.selection;
+package com.axon.proArena.object.selection.wrapper;
 
+import com.axon.proArena.object.selection.SelectionType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.block.Block;
@@ -8,11 +9,9 @@ import org.bukkit.entity.Player;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SelectionWrapper {
-    final Player player;
-    final SelectionType type;
+    final @NonNull Player player;
+    final @NonNull SelectionType type;
     final Block block;
-    @Setter
-    String path;
 
     public SelectionWrapper(@NonNull Player player, @NonNull SelectionType type, Block block) {
         this.player = player;

@@ -1,7 +1,7 @@
 package com.axon.proArena.object.selection;
 
-import com.axon.proArena.object.dto.BlockInstruction;
-import com.axon.proArena.object.dto.StructureInstruction;
+import com.axon.proArena.object.structure.impl.BlockInstruction;
+import com.axon.proArena.object.structure.impl.StructureInstruction;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.AccessLevel;

@@ -9,7 +9,7 @@ public class TreeGenerator {
 
         if (Math.abs(x) > 512 && Math.abs(z) > 512) return;
 
-        if (!world.getBlockAt(x -1, y, z).getType().equals(Material.GRASS_BLOCK)) return;
+        if (!world.getBlockAt(x - 1, y, z).getType().equals(Material.GRASS_BLOCK)) return;
 
         // ствол    
         for (int i = 0; i < 5; i++) {

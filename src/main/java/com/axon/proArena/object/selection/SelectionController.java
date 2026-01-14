@@ -1,7 +1,9 @@
 package com.axon.proArena.object.selection;
 
-import com.axon.proArena.object.Structure;
-import com.axon.proArena.object.dto.StructureInstruction;
+import com.axon.proArena.object.structure.impl.InstructionStructure;
+import com.axon.proArena.object.structure.impl.StructureInstruction;
+import com.axon.proArena.object.selection.wrapper.SelectionPath;
+import com.axon.proArena.object.selection.wrapper.SelectionWrapper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,7 +50,7 @@ public class SelectionController {
 
     private Selection createSelection(@NonNull Player player) {
         Selection selection = new Selection();
-        selections.put(player, new Selection());
+        selections.put(player, selection);
         return selection;
     }
 
@@ -95,22 +97,24 @@ public class SelectionController {
         }
 
         StructureInstruction structureInstruction = selection.toInstruction();
-        Structure structure = new Structure(structureInstruction);
-        structure.place(player.getTargetBlock(null, 10).getLocation());
+        InstructionStructure instructionStructure = new InstructionStructure("null", structureInstruction);
+        instructionStructure.place(player.getLocation());
     }
 
     public void apply(@NonNull SelectionWrapper wrapper) {
         SelectionType type = wrapper.getType();
         Player player = wrapper.getPlayer();
-        getSelection(player);
+
         switch (type) {
             case SelectionType.DELETE -> deleteSelection(player);
             case SelectionType.CLEAR -> clearSelection(player);
             case SelectionType.SAVE -> {
-                try {
-                    saveSelection(player, wrapper.getPath());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                if (wrapper instanceof SelectionPath path) {
+                    try {
+                        saveSelection(player,"structure/" + path.getPath());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
             default -> applyWithBlock(wrapper);

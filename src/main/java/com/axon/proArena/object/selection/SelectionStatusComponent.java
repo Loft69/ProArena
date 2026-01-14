@@ -31,26 +31,11 @@ public class SelectionStatusComponent {
                         .append(Component.text("|", NamedTextColor.DARK_GRAY))
                         .append(Component.newline());
 
-        Component buttons =
-                Component.text("| ", NamedTextColor.DARK_GRAY)
-                        .append(button(
-                                " Сохранить ",
-                                NamedTextColor.GREEN,
-                                ClickEvent.suggestCommand("/proarena save")
-                        ))
-                        .append(Component.space())
-                        .append(button(
-                                " Поставить ",
-                                NamedTextColor.AQUA,
-                                ClickEvent.runCommand("/proarena place")
-                        ));
-
         Component footer = Component.text(LINE, NamedTextColor.DARK_GRAY);
 
         return Component.empty()
                 .append(header).append(Component.newline())
                 .append(body)
-                .append(buttons).append(Component.newline())
                 .append(footer);
     }
 

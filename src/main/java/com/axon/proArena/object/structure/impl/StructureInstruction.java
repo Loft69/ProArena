@@ -1,5 +1,6 @@
-package com.axon.proArena.object.dto;
+package com.axon.proArena.object.structure.impl;
 
+import com.axon.proArena.object.structure.api.StructureMeta;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

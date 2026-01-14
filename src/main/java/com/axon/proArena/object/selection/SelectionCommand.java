@@ -1,5 +1,7 @@
 package com.axon.proArena.object.selection;
 
+import com.axon.proArena.object.selection.wrapper.SelectionPath;
+import com.axon.proArena.object.selection.wrapper.SelectionWrapper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -40,8 +42,7 @@ public class SelectionCommand implements CommandExecutor, TabCompleter {
             if (command.equalsIgnoreCase("save")) {
                 String path = args[1];
                 SelectionType type = SelectionType.SAVE;
-                SelectionWrapper wrapper = new SelectionWrapper(player, type, null);
-                wrapper.setPath(path);
+                SelectionPath wrapper = new SelectionPath(player, type, path, null);
                 controller.apply(wrapper);
             }
 
@@ -84,7 +85,7 @@ public class SelectionCommand implements CommandExecutor, TabCompleter {
 
                     player.getInventory().addItem(item).forEach((x, y) -> player.getWorld().dropItem(player.getLocation(), y));
                 }
-                case "place" -> controller.placeSelection(player);
+                case "paste" -> controller.placeSelection(player);
             }
 
         }
